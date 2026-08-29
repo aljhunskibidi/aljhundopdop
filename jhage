@@ -1,0 +1,181 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+
+local player = Players.LocalPlayer
+
+--// GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "Aljhunskibididapdap🤑🤑🤑🤑🤑"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("CoreGui")
+
+--// MAIN FRAME
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 430, 0, 270)
+frame.Position = UDim2.new(0.5, -215, 0.5, -135)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 14)
+corner.Parent = frame
+
+--// TITLE
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -60, 0, 50)
+title.Position = UDim2.new(0, 20, 0, 8)
+title.BackgroundTransparency = 1
+title.Text = "ALJHUN'S SCRIPT 🤑"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 22
+title.Font = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = frame
+
+--// X BUTTON
+local close = Instance.new("TextButton")
+close.Size = UDim2.new(0, 38, 0, 38)
+close.Position = UDim2.new(1, -48, 0, 14)
+close.BackgroundColor3 = Color3.fromRGB(180, 45, 55)
+close.Text = "X"
+close.TextColor3 = Color3.fromRGB(255, 255, 255)
+close.TextSize = 18
+close.Font = Enum.Font.GothamBold
+close.Parent = frame
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 10)
+closeCorner.Parent = close
+
+--// SUBTITLE
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(1, -40, 0, 35)
+subtitle.Position = UDim2.new(0, 20, 0, 60)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "Enter your key to continue"
+subtitle.TextColor3 = Color3.fromRGB(170, 170, 180)
+subtitle.TextSize = 15
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.Parent = frame
+
+--// KEY BOX
+local keyBox = Instance.new("TextBox")
+keyBox.Size = UDim2.new(1, -40, 0, 45)
+keyBox.Position = UDim2.new(0, 20, 0, 105)
+keyBox.BackgroundColor3 = Color3.fromRGB(32, 32, 40)
+keyBox.PlaceholderText = "Enter key..."
+keyBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
+keyBox.Text = ""
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.TextSize = 15
+keyBox.Font = Enum.Font.Gotham
+keyBox.ClearTextOnFocus = false
+keyBox.Parent = frame
+
+local keyCorner = Instance.new("UICorner")
+keyCorner.CornerRadius = UDim.new(0, 9)
+keyCorner.Parent = keyBox
+
+--// AUTHENTICATE
+local auth = Instance.new("TextButton")
+auth.Size = UDim2.new(0.47, -10, 0, 45)
+auth.Position = UDim2.new(0, 20, 0, 165)
+auth.BackgroundColor3 = Color3.fromRGB(70, 110, 255)
+auth.Text = "AUTHENTICATE"
+auth.TextColor3 = Color3.fromRGB(255, 255, 255)
+auth.TextSize = 14
+auth.Font = Enum.Font.GothamBold
+auth.Parent = frame
+
+local authCorner = Instance.new("UICorner")
+authCorner.CornerRadius = UDim.new(0, 9)
+authCorner.Parent = auth
+
+--// KEYLESS
+local keyless = Instance.new("TextButton")
+keyless.Size = UDim2.new(0.47, -10, 0, 45)
+keyless.Position = UDim2.new(0.53, 0, 0, 165)
+keyless.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+keyless.Text = "USE KEYLESS"
+keyless.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyless.TextSize = 14
+keyless.Font = Enum.Font.GothamBold
+keyless.Parent = frame
+
+local keylessCorner = Instance.new("UICorner")
+keylessCorner.CornerRadius = UDim.new(0, 9)
+keylessCorner.Parent = keyless
+
+--// STATUS
+local status = Instance.new("TextLabel")
+status.Size = UDim2.new(1, -40, 0, 35)
+status.Position = UDim2.new(0, 20, 0, 220)
+status.BackgroundTransparency = 1
+status.Text = "Status: Waiting for authentication"
+status.TextColor3 = Color3.fromRGB(150, 150, 160)
+status.TextSize = 13
+status.Font = Enum.Font.Gotham
+status.Parent = frame
+
+--// MEME MESSAGE
+local function memeMessage()
+    local meme = Instance.new("TextLabel")
+
+    meme.Size = UDim2.new(0, 700, 0, 120)
+    meme.Position = UDim2.new(0.5, -350, 0.5, -60)
+    meme.BackgroundTransparency = 1
+
+    meme.Text = "MOTHEFUCKER WHAT ARE YOU DOING 😭💀"
+    meme.TextColor3 = Color3.fromRGB(255, 255, 255)
+    meme.TextStrokeTransparency = 0
+    meme.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+    meme.TextScaled = true
+    meme.Font = Enum.Font.GothamBlack
+    meme.ZIndex = 999
+
+    meme.Parent = gui
+
+    task.wait(3)
+
+    if meme then
+        meme:Destroy()
+    end
+end
+
+--// AUTHENTICATE
+auth.MouseButton1Click:Connect(function()
+    if keyBox.Text == "" then
+        status.Text = "Status: Please enter a key."
+        return
+    end
+
+    status.Text = "Status: Authenticating..."
+    task.wait(1)
+
+    memeMessage()
+end)
+
+--// KEYLESS
+keyless.MouseButton1Click:Connect(function()
+
+    StarterGui:SetCore("SendNotification", {
+        Title = "ALJHUN 🤑",
+        Text = "thank u nigga🤑🤑",
+        Duration = 3
+    })
+
+    task.wait(0.5)
+
+    gui:Destroy()
+end)
+
+--// X BUTTON
+close.MouseButton1Click:Connect(function()
+
+    gui:Destroy()
+
+    player:Kick("Nigga u just got banned lol 😭")
+end)
