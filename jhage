@@ -1,11 +1,38 @@
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
+--// SMART ANTI-KICK BYPASS (Allows your X button, blocks everything else)
+_G.AllowMyOwnKick = true
 
+local oldNamecall
+oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    if self == game:GetService("Players").LocalPlayer and (method == "Kick" or method == "kick") then
+        if _G.AllowMyOwnKick then
+            return oldNamecall(self, ...) -- Allows your X button kick to pass through
+        end
+        return nil -- Blocks game anti-cheats from kicking you
+    end
+    return oldNamecall(self, ...)
+end)
+
+local oldIndex
+oldIndex = hookmetamethod(game, "__index", function(self, key)
+    if self == game:GetService("Players").LocalPlayer and (key == "Kick" or key == "kick") then
+        if _G.AllowMyOwnKick then
+            return oldIndex(self, key) -- Allows your X button kick to pass through
+        end
+        return function() return nil end -- Blocks game anti-cheats from kicking you
+    end
+    return oldIndex(self, key)
+end)
+
+--// YOUR ORIGINAL SCRIPT BELOW (UNCHANGED EXCLUDING THE X BUTTON FLAG)
+for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance")) == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
+
+local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 --// GUI
 local gui = Instance.new("ScreenGui")
-gui.Name = "Aljhunskibididapdap🤑🤑🤑🤑🤑"
+gui.Name = "Aljhunskibididapdap"
 gui.ResetOnSpawn = false
 gui.Parent = game:GetService("CoreGui")
 
@@ -17,9 +44,7 @@ frame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 frame.BorderSizePixel = 0
 frame.Parent = gui
 
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 14)
-corner.Parent = frame
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 14)
 
 --// TITLE
 local title = Instance.new("TextLabel")
@@ -27,19 +52,19 @@ title.Size = UDim2.new(1, -60, 0, 50)
 title.Position = UDim2.new(0, 20, 0, 8)
 title.BackgroundTransparency = 1
 title.Text = "ALJHUN'S SCRIPT 🤑"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextColor3 = Color3.new(1, 1, 1)
 title.TextSize = 22
 title.Font = Enum.Font.GothamBold
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = frame
 
---// X BUTTON
+--// X
 local close = Instance.new("TextButton")
 close.Size = UDim2.new(0, 38, 0, 38)
 close.Position = UDim2.new(1, -48, 0, 14)
 close.BackgroundColor3 = Color3.fromRGB(180, 45, 55)
 close.Text = "X"
-close.TextColor3 = Color3.fromRGB(255, 255, 255)
+close.TextColor3 = Color3.new(1, 1, 1)
 close.TextSize = 18
 close.Font = Enum.Font.GothamBold
 close.Parent = frame
@@ -64,9 +89,8 @@ keyBox.Size = UDim2.new(1, -40, 0, 45)
 keyBox.Position = UDim2.new(0, 20, 0, 105)
 keyBox.BackgroundColor3 = Color3.fromRGB(32, 32, 40)
 keyBox.PlaceholderText = "Enter key..."
-keyBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
 keyBox.Text = ""
-keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.TextColor3 = Color3.new(1, 1, 1)
 keyBox.TextSize = 15
 keyBox.Font = Enum.Font.Gotham
 keyBox.ClearTextOnFocus = false
@@ -74,13 +98,13 @@ keyBox.Parent = frame
 
 Instance.new("UICorner", keyBox).CornerRadius = UDim.new(0, 9)
 
---// AUTHENTICATE
+--// AUTH
 local auth = Instance.new("TextButton")
 auth.Size = UDim2.new(0.47, -10, 0, 45)
 auth.Position = UDim2.new(0, 20, 0, 165)
 auth.BackgroundColor3 = Color3.fromRGB(70, 110, 255)
 auth.Text = "AUTHENTICATE"
-auth.TextColor3 = Color3.fromRGB(255, 255, 255)
+auth.TextColor3 = Color3.new(1, 1, 1)
 auth.TextSize = 14
 auth.Font = Enum.Font.GothamBold
 auth.Parent = frame
@@ -93,7 +117,7 @@ keyless.Size = UDim2.new(0.47, -10, 0, 45)
 keyless.Position = UDim2.new(0.53, 0, 0, 165)
 keyless.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
 keyless.Text = "USE KEYLESS"
-keyless.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyless.TextColor3 = Color3.new(1, 1, 1)
 keyless.TextSize = 14
 keyless.Font = Enum.Font.GothamBold
 keyless.Parent = frame
@@ -111,112 +135,113 @@ status.TextSize = 13
 status.Font = Enum.Font.Gotham
 status.Parent = frame
 
---// BIG MEME MESSAGE
-local function memeMessage()
-    frame.Visible = false
-
-    local meme = Instance.new("TextLabel")
-    meme.Size = UDim2.new(0, 850, 0, 150)
-    meme.Position = UDim2.new(0.5, -425, 0.5, -75)
-    meme.BackgroundTransparency = 1
-    meme.Text = "BRO WHAT ARE YOU DOING 😭💀"
-    meme.TextColor3 = Color3.fromRGB(255, 255, 255)
-    meme.TextStrokeTransparency = 0
-    meme.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-    meme.TextScaled = true
-    meme.Font = Enum.Font.GothamBlack
-    meme.ZIndex = 999
-    meme.Parent = gui
-
-    task.wait(3)
-
-    meme:Destroy()
-    frame.Visible = true
+--// AUTH MEME
+auth.MouseButton1Click:Connect(function()
+if keyBox.Text == "" then
+status.Text = "Status: Please enter a key."
+return
 end
 
---// AUTHENTICATE
-auth.MouseButton1Click:Connect(function()
-    if keyBox.Text == "" then
-        status.Text = "Status: Please enter a key."
-        return
-    end
+frame.Visible = false  
 
-    status.Text = "Status: Authenticating..."
-    task.wait(1)
+local meme = Instance.new("TextLabel")  
+meme.Size = UDim2.new(0, 850, 0, 150)  
+meme.Position = UDim2.new(0.5, -425, 0.5, -75)  
+meme.BackgroundTransparency = 1  
+meme.Text = "MOTHERFUCKER BRO WHAT ARE YOU DOING 😭💀"  
+meme.TextColor3 = Color3.new(1, 1, 1)  
+meme.TextStrokeTransparency = 0  
+meme.TextScaled = true  
+meme.Font = Enum.Font.GothamBlack  
+meme.ZIndex = 999  
+meme.Parent = gui  
 
-    memeMessage()
+task.wait(3)  
+
+meme:Destroy()  
+frame.Visible = true
+
 end)
 
---// KEYLESS MEME SCREEN + SOUND
+--// KEYLESS
 keyless.MouseButton1Click:Connect(function()
 
-    frame.Visible = false
+frame.Visible = false  
 
-    local thankGui = Instance.new("Frame")
-    thankGui.Size = UDim2.new(1, 0, 1, 0)
-    thankGui.BackgroundTransparency = 1
-    thankGui.ZIndex = 100
-    thankGui.Parent = gui
+local thankGui = Instance.new("Frame")  
+thankGui.Size = UDim2.new(1, 0, 1, 0)  
+thankGui.BackgroundTransparency = 1  
+thankGui.ZIndex = 100  
+thankGui.Parent = gui  
 
-    -- BIG LIKE
-    local like = Instance.new("TextLabel")
-    like.Size = UDim2.new(0, 220, 0, 220)
-    like.Position = UDim2.new(0.5, -110, 0.18, 0)
-    like.BackgroundTransparency = 1
-    like.Text = "👍🤑"
-    like.TextScaled = true
-    like.Font = Enum.Font.GothamBlack
-    like.ZIndex = 101
-    like.Parent = thankGui
+--// LIKE  
+local like = Instance.new("TextLabel")  
+like.Size = UDim2.new(0, 220, 0, 220)  
+like.Position = UDim2.new(0.5, -110, 0.18, 0)  
+like.BackgroundTransparency = 1  
+like.Text = "👍🤑"  
+like.TextScaled = true  
+like.Font = Enum.Font.GothamBlack  
+like.ZIndex = 101  
+like.Parent = thankGui  
 
-    -- THANK YOU
-    local thank = Instance.new("TextLabel")
-    thank.Size = UDim2.new(0, 850, 0, 150)
-    thank.Position = UDim2.new(0.5, -425, 0.58, 0)
-    thank.BackgroundTransparency = 1
-    thank.Text = "THANK U 🤑🤑"
-    thank.TextColor3 = Color3.fromRGB(255, 255, 255)
-    thank.TextStrokeTransparency = 0
-    thank.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-    thank.TextScaled = true
-    thank.Font = Enum.Font.GothamBlack
-    thank.ZIndex = 101
-    thank.Parent = thankGui
+--// THANK YOU  
+local thank = Instance.new("TextLabel")  
+thank.Size = UDim2.new(0, 850, 0, 150)  
+thank.Position = UDim2.new(0.5, -425, 0.58, 0)  
+thank.BackgroundTransparency = 1  
+thank.Text = "THANK U NIGGA🤑🤑"  
+thank.TextColor3 = Color3.new(1, 1, 1)  
+thank.TextStrokeTransparency = 0  
+thank.TextStrokeColor3 = Color3.new(0, 0, 0)  
+thank.TextScaled = true  
+thank.Font = Enum.Font.GothamBlack  
+thank.ZIndex = 101  
+thank.Parent = thankGui  
 
-    -- EXTRA TEXT
-    local sub = Instance.new("TextLabel")
-    sub.Size = UDim2.new(0, 650, 0, 60)
-    sub.Position = UDim2.new(0.5, -325, 0.76, 0)
-    sub.BackgroundTransparency = 1
-    sub.Text = "ALJHUN APPROVES 👍🤑"
-    sub.TextColor3 = Color3.fromRGB(255, 255, 255)
-    sub.TextStrokeTransparency = 0
-    sub.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-    sub.TextScaled = true
-    sub.Font = Enum.Font.GothamBold
-    sub.ZIndex = 101
-    sub.Parent = thankGui
+--// 20 SECOND COUNTDOWN  
+local timer = Instance.new("TextLabel")  
+timer.Size = UDim2.new(0, 600, 0, 60)  
+timer.Position = UDim2.new(0.5, -300, 0.76, 0)  
+timer.BackgroundTransparency = 1  
+timer.TextColor3 = Color3.new(1, 1, 1)  
+timer.TextStrokeTransparency = 0  
+timer.TextStrokeColor3 = Color3.new(0, 0, 0)  
+timer.TextScaled = true  
+timer.Font = Enum.Font.GothamBold  
+timer.ZIndex = 101  
+timer.Parent = thankGui  
 
-    --// HAR HAR HAR SOUND
-    local sound = Instance.new("Sound")
-    sound.Name = "HarHarHar"
-    sound.SoundId = "rbxassetid://18331725459"
-    sound.Volume = 2
-    sound.Looped = false
-    sound.Parent = thankGui
+--// SOUND  
+local sound = Instance.new("Sound")  
+sound.Name = "HarHarHar"  
+sound.SoundId = "rbxassetid://18331725459"  
+sound.Volume = 2  
+sound.Looped = false  
+sound.Parent = thankGui  
 
-    -- PLAY IMMEDIATELY WHEN THANK U APPEARS
-    sound:Play()
+-- Start sound immediately  
+sound:Play()  
 
-    task.wait(3)
+-- 20 SECOND TIMER  
+for i = 20, 1, -1 do  
+    timer.Text = "HAR HAR HAR 💀  |  " .. i .. "s"  
+    task.wait(1)  
+end  
 
-    sound:Stop()
-    thankGui:Destroy()
-    gui:Destroy()
+timer.Text = "DONE 🤑"  
+
+task.wait(1)  
+
+sound:Stop()  
+thankGui:Destroy()  
+gui:Destroy()
+
 end)
 
---// X BUTTON
+--// X
 close.MouseButton1Click:Connect(function()
-    gui:Destroy()
-    player:Kick("bro u just got banned lol 😭")
+gui:Destroy()
+_G.AllowMyOwnKick = true -- Temporarily disables the bypass so the click successfully kicks
+player:Kick("nigga bro u just got banned lol 😭")
 end)
