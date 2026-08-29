@@ -44,9 +44,7 @@ close.TextSize = 18
 close.Font = Enum.Font.GothamBold
 close.Parent = frame
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 10)
-closeCorner.Parent = close
+Instance.new("UICorner", close).CornerRadius = UDim.new(0, 10)
 
 --// SUBTITLE
 local subtitle = Instance.new("TextLabel")
@@ -74,9 +72,7 @@ keyBox.Font = Enum.Font.Gotham
 keyBox.ClearTextOnFocus = false
 keyBox.Parent = frame
 
-local keyCorner = Instance.new("UICorner")
-keyCorner.CornerRadius = UDim.new(0, 9)
-keyCorner.Parent = keyBox
+Instance.new("UICorner", keyBox).CornerRadius = UDim.new(0, 9)
 
 --// AUTHENTICATE
 local auth = Instance.new("TextButton")
@@ -89,9 +85,7 @@ auth.TextSize = 14
 auth.Font = Enum.Font.GothamBold
 auth.Parent = frame
 
-local authCorner = Instance.new("UICorner")
-authCorner.CornerRadius = UDim.new(0, 9)
-authCorner.Parent = auth
+Instance.new("UICorner", auth).CornerRadius = UDim.new(0, 9)
 
 --// KEYLESS
 local keyless = Instance.new("TextButton")
@@ -104,9 +98,7 @@ keyless.TextSize = 14
 keyless.Font = Enum.Font.GothamBold
 keyless.Parent = frame
 
-local keylessCorner = Instance.new("UICorner")
-keylessCorner.CornerRadius = UDim.new(0, 9)
-keylessCorner.Parent = keyless
+Instance.new("UICorner", keyless).CornerRadius = UDim.new(0, 9)
 
 --// STATUS
 local status = Instance.new("TextLabel")
@@ -119,30 +111,27 @@ status.TextSize = 13
 status.Font = Enum.Font.Gotham
 status.Parent = frame
 
---// MEME MESSAGE
+--// BIG MEME MESSAGE
 local function memeMessage()
+    frame.Visible = false
+
     local meme = Instance.new("TextLabel")
-
-    meme.Size = UDim2.new(0, 700, 0, 120)
-    meme.Position = UDim2.new(0.5, -350, 0.5, -60)
+    meme.Size = UDim2.new(0, 850, 0, 150)
+    meme.Position = UDim2.new(0.5, -425, 0.5, -75)
     meme.BackgroundTransparency = 1
-
-    meme.Text = "MOTHEFUCKER WHAT ARE YOU DOING 😭💀"
+    meme.Text = "BRO WHAT ARE YOU DOING 😭💀"
     meme.TextColor3 = Color3.fromRGB(255, 255, 255)
     meme.TextStrokeTransparency = 0
     meme.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-
     meme.TextScaled = true
     meme.Font = Enum.Font.GothamBlack
     meme.ZIndex = 999
-
     meme.Parent = gui
 
     task.wait(3)
 
-    if meme then
-        meme:Destroy()
-    end
+    meme:Destroy()
+    frame.Visible = true
 end
 
 --// AUTHENTICATE
@@ -158,24 +147,76 @@ auth.MouseButton1Click:Connect(function()
     memeMessage()
 end)
 
---// KEYLESS
+--// KEYLESS MEME SCREEN + SOUND
 keyless.MouseButton1Click:Connect(function()
 
-    StarterGui:SetCore("SendNotification", {
-        Title = "ALJHUN 🤑",
-        Text = "thank u nigga🤑🤑",
-        Duration = 3
-    })
+    frame.Visible = false
 
-    task.wait(0.5)
+    local thankGui = Instance.new("Frame")
+    thankGui.Size = UDim2.new(1, 0, 1, 0)
+    thankGui.BackgroundTransparency = 1
+    thankGui.ZIndex = 100
+    thankGui.Parent = gui
 
+    -- BIG LIKE
+    local like = Instance.new("TextLabel")
+    like.Size = UDim2.new(0, 220, 0, 220)
+    like.Position = UDim2.new(0.5, -110, 0.18, 0)
+    like.BackgroundTransparency = 1
+    like.Text = "👍🤑"
+    like.TextScaled = true
+    like.Font = Enum.Font.GothamBlack
+    like.ZIndex = 101
+    like.Parent = thankGui
+
+    -- THANK YOU
+    local thank = Instance.new("TextLabel")
+    thank.Size = UDim2.new(0, 850, 0, 150)
+    thank.Position = UDim2.new(0.5, -425, 0.58, 0)
+    thank.BackgroundTransparency = 1
+    thank.Text = "THANK U 🤑🤑"
+    thank.TextColor3 = Color3.fromRGB(255, 255, 255)
+    thank.TextStrokeTransparency = 0
+    thank.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    thank.TextScaled = true
+    thank.Font = Enum.Font.GothamBlack
+    thank.ZIndex = 101
+    thank.Parent = thankGui
+
+    -- EXTRA TEXT
+    local sub = Instance.new("TextLabel")
+    sub.Size = UDim2.new(0, 650, 0, 60)
+    sub.Position = UDim2.new(0.5, -325, 0.76, 0)
+    sub.BackgroundTransparency = 1
+    sub.Text = "ALJHUN APPROVES 👍🤑"
+    sub.TextColor3 = Color3.fromRGB(255, 255, 255)
+    sub.TextStrokeTransparency = 0
+    sub.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    sub.TextScaled = true
+    sub.Font = Enum.Font.GothamBold
+    sub.ZIndex = 101
+    sub.Parent = thankGui
+
+    --// HAR HAR HAR SOUND
+    local sound = Instance.new("Sound")
+    sound.Name = "HarHarHar"
+    sound.SoundId = "rbxassetid://18331725459"
+    sound.Volume = 2
+    sound.Looped = false
+    sound.Parent = thankGui
+
+    -- PLAY IMMEDIATELY WHEN THANK U APPEARS
+    sound:Play()
+
+    task.wait(3)
+
+    sound:Stop()
+    thankGui:Destroy()
     gui:Destroy()
 end)
 
 --// X BUTTON
 close.MouseButton1Click:Connect(function()
-
     gui:Destroy()
-
-    player:Kick("Nigga u just got banned lol 😭")
+    player:Kick("bro u just got banned lol 😭")
 end)
